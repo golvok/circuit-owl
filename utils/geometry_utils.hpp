@@ -7,6 +7,9 @@ std::ostream& operator<<(std::ostream& os, const std::pair<cv::Point2i, cv::Poin
 
 namespace utils {
 
+using Line = std::pair<cv::Point2i, cv::Point2i>;
+using ListOfLines = std::vector<Line>;
+
 float minimum_distance(const std::pair<cv::Point2i, cv::Point2i>& line, cv::Point2f p);
 
 // Given three colinear points p, q, r, the function checks if

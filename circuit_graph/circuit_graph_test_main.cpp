@@ -48,4 +48,17 @@ int main(int argc, char** argv) {
 
 	cv::imshow("with clusters", with_clusters_marked);
 	cv::waitKey();
+
+	const auto& circuit_cluster = *cg::cluster_most_likely_to_be_circuit(cluster_lists, lines);
+
+	cv::Mat with_circuit_removed = img.clone();
+
+	auto overwrite_colour = cv::Scalar(255, 255, 255);
+	const float overwrite_width = 6;
+	for (const auto& line_index : circuit_cluster) {
+		cv::line(with_circuit_removed, lines[line_index].first, lines[line_index].second, overwrite_colour, overwrite_width, CV_AA);
+	}
+
+	cv::imshow("with circuit removed", with_circuit_removed);
+	cv::waitKey();
 }
