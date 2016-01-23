@@ -21,7 +21,7 @@ DEPS_DIR=DEPS/
 WARNING_FLAGS += -Wall -Wextra -pedantic -Weffc++ -Werror
 
 # put other flags for both the compiler & linker here
-EXTRA_FLAGS = -std=c++14
+EXTRA_FLAGS = -std=c++11
 
 # add flags for debugging
 ifeq ($(BUILD_MODE),debug)
@@ -45,7 +45,6 @@ INCLUDE_FLAGS += \
 
 # GRAPHICS_INCL_FLAGS += $(shell pkg-config --cflags gtkmm-3.0)
 OPENCV_INCL_FLAGS += $(shell pkg-config --cflags opencv)
-TESSERACT_INCL_FLAGS += $(shell pkg-config --cflags tesseract)
 
 CXXFLAGS += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(INCLUDE_FLAGS)
 LDFLAGS  += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(LIBRARY_LINK_FLAGS)
@@ -54,7 +53,7 @@ LDFLAGS  += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(LIBRARY_LINK_FLAGS)
 .PRECIOUS: $(OBJ_DIR)%.o
 
 # define source directories
-SOURCE_DIRS = line_segments/ ocr/ ./
+SOURCE_DIRS = elements/ ./
 
 # compute all directories that might need creation
 DIRS=$(EXE_DIR) $(OBJ_DIR) $(DEPS_DIR) \
@@ -63,10 +62,7 @@ DIRS=$(EXE_DIR) $(OBJ_DIR) $(DEPS_DIR) \
 
 # define executables
 EXES= \
-$(EXE_DIR)houghlines \
-$(EXE_DIR)morph_skeleton \
-$(EXE_DIR)ms_and_hough \
-$(EXE_DIR)ocr_positional
+$(EXE_DIR)elements
 
 all: $(EXES) | build_info
 
@@ -75,23 +71,16 @@ build_info:
 	@echo "In build mode ${BUILD_MODE}"
 
 # add more dependencies here:
-$(EXE_DIR)houghlines: \
-	$(OBJ_DIR)line_segments/houghlines.o
+$(EXE_DIR)elements: \
+	$(OBJ_DIR)elements/elements.o \
+	$(OBJ_DIR)elements/elements_test_main.o
 
-$(EXE_DIR)morph_skeleton: \
-	$(OBJ_DIR)line_segments/morph_skeleton.o
-
-$(EXE_DIR)ms_and_hough: \
-	$(OBJ_DIR)line_segments/ms_and_hough.o
-
-$(EXE_DIR)ocr_positional: \
-	$(OBJ_DIR)ocr/ocr_positional.o
 
 # define extra flags for particular object files
 # adds graphics include flags to everything in graphics dir
 # $(OBJ_DIR)graphics/%.o: INCLUDE_FLAGS+=$(GRAPHICS_INCL_FLAGS)
 
-$(OBJ_DIR)line_segments/%.o: INCLUDE_FLAGS+=$(OPENCV_INCL_FLAGS)
+$(OBJ_DIR)elements/%.o: INCLUDE_FLAGS+=$(OPENCV_INCL_FLAGS)
 
 # include all the dependency files, if any exist
 EXISTING_DEP_FILES = \
