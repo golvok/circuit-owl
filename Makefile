@@ -62,7 +62,8 @@ DIRS=$(EXE_DIR) $(OBJ_DIR) $(DEPS_DIR) \
 
 # define executables
 EXES= \
-$(EXE_DIR)elements
+$(EXE_DIR)elements \
+$(EXE_DIR)circuit_graph_test
 
 all: $(EXES) | build_info
 
@@ -74,6 +75,9 @@ build_info:
 $(EXE_DIR)elements: \
 	$(OBJ_DIR)elements/elements.o \
 	$(OBJ_DIR)elements/elements_test_main.o
+
+$(EXE_DIR)circuit_graph: \
+	$(OBJ_DIR)circuit_graph/circuit_graph_test_main.o
 
 
 # define extra flags for particular object files
