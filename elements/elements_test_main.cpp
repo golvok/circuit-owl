@@ -84,13 +84,8 @@ void detectAndDisplay( Mat frame )
 		 }
 	}
 
-	//-- Show what you got
-	imshow( window_name, frame );
 	imwrite( "image.jpg", frame );
-	char a;
-	cin >> a;
-	getchar();
-	cout << "done" << endl;
+	return;
  }
 
 /** @function readme */
