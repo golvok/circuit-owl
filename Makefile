@@ -53,7 +53,7 @@ LDFLAGS  += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(LIBRARY_LINK_FLAGS)
 .PRECIOUS: $(OBJ_DIR)%.o
 
 # define source directories
-SOURCE_DIRS = circuit_graph/ elements/ text/ utils/ ./
+SOURCE_DIRS = circuit_graph/ display/ elements/ text/ utils/./
 
 # compute all directories that might need creation
 DIRS=$(EXE_DIR) $(OBJ_DIR) $(DEPS_DIR) \
@@ -64,7 +64,8 @@ DIRS=$(EXE_DIR) $(OBJ_DIR) $(DEPS_DIR) \
 EXES= \
 $(EXE_DIR)elements \
 $(EXE_DIR)circuit_graph_test \
-$(EXE_DIR)text_test
+$(EXE_DIR)text_test \
+$(EXE_DIR)display_test
 
 all: $(EXES) | build_info
 
@@ -86,6 +87,10 @@ $(EXE_DIR)circuit_graph_test: \
 $(EXE_DIR)text_test: \
 	$(OBJ_DIR)text/text_finder.o \
 	$(OBJ_DIR)text/text_test_main.o
+
+$(EXE_DIR)display_test: \
+	$(OBJ_DIR)display/display.o \
+	$(OBJ_DIR)display/display_test_main.o
 
 
 # define extra flags for particular object files
