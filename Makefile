@@ -53,7 +53,7 @@ LDFLAGS  += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(LIBRARY_LINK_FLAGS)
 .PRECIOUS: $(OBJ_DIR)%.o
 
 # define source directories
-SOURCE_DIRS = circuit_graph/ elements/ text/ ./
+SOURCE_DIRS = circuit_graph/ elements/ text/ utils/ ./
 
 # compute all directories that might need creation
 DIRS=$(EXE_DIR) $(OBJ_DIR) $(DEPS_DIR) \
@@ -79,7 +79,9 @@ $(EXE_DIR)elements: \
 
 $(EXE_DIR)circuit_graph_test: \
 	$(OBJ_DIR)circuit_graph/circuit_graph_test_main.o \
-	$(OBJ_DIR)circuit_graph/line_finding.o
+	$(OBJ_DIR)circuit_graph/line_clustering.o \
+	$(OBJ_DIR)circuit_graph/line_finding.o \
+	$(OBJ_DIR)utils/geometry_utils.o
 
 $(EXE_DIR)text_test: \
 	$(OBJ_DIR)text/text_finder.o \

@@ -26,7 +26,6 @@ std::vector<cv::Vec4i> find_lines(const cv::Mat& img_src, bool debug) {
 		if (cv::countNonZero(inverted) == 0) {
 			break;
 		}
-
 	}
 
 	if (debug) {
