@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
 	}
 
 	const float NEARNESS_THRESH = 5; // in pixels
-	std::vector<std::vector<size_t>> cluster_lists = cg::cluster_lines(lines, NEARNESS_THRESH, true);
+	cg::ListOfListOfLineIndices cluster_lists = cg::cluster_lines(lines, NEARNESS_THRESH, true);
 
 	cv::Mat with_clusters_marked = img.clone();
 

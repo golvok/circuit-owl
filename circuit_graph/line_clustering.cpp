@@ -7,8 +7,8 @@
 
 namespace cg {
 
-std::vector<std::vector<size_t>> cluster_lines(const std::vector<std::pair<cv::Point2i, cv::Point2i>>& lines , const float distance_thresh, const bool debug) {
-	std::vector<std::vector<size_t>> cluster_lists;
+ListOfListOfLineIndices cluster_lines(const std::vector<std::pair<cv::Point2i, cv::Point2i>>& lines , const float distance_thresh, const bool debug) {
+	ListOfListOfLineIndices cluster_lists;
 
 	// iterate over the lines
 	for (size_t i = 0; i < lines.size(); ++i) {
@@ -78,7 +78,7 @@ std::vector<std::vector<size_t>> cluster_lines(const std::vector<std::pair<cv::P
 
 	{
 		// remove empty oness
-		std::vector<std::vector<size_t>> new_cluster_lists;
+		ListOfListOfLineIndices new_cluster_lists;
 		for (auto& cluster_list : cluster_lists) {
 			if (cluster_list.empty() == false) {
 				new_cluster_lists.emplace_back(std::move(cluster_list));
