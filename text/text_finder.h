@@ -25,7 +25,7 @@ class text_finder
     public:
     text_finder(string file_path) : file(file_path), words() {};
     
-    void save();
+    void save(string output_file);
     void process();
     const vector<tess_result>& get_words() { return words; }
 

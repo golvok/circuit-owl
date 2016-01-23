@@ -13,6 +13,8 @@ void text_finder::process()
 	if (tess.Init(nullptr, "eng")) {
 		throw runtime_error("could not init tesseract");
 	}
+    
+    printf("opening file %s\n", file.c_str());
 
 	auto pix_up = std::unique_ptr<Pix>(pixRead(file.c_str()));
 	tess.SetVariable("save_blob_choices", "T");
@@ -41,7 +43,7 @@ void text_finder::process()
     sort(words.begin(), words.end(), pairCompare);
 }
 
-void text_finder::save()
+void text_finder::save(string output_file)
 {
     Mat image = imread(file.c_str(), 1 );
     int heightThresh = words.front().height * 2;
@@ -63,6 +65,6 @@ void text_finder::save()
         }
     }
 
-    imwrite( "removed_text.png", image );
+    imwrite(output_file, image );
 }
 
