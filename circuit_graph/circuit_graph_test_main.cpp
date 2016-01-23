@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
 	const float NEARNESS_THRESH = 5; // in pixels
 	std::vector<std::vector<size_t>> cluster_lists = cg::cluster_lines(lines, NEARNESS_THRESH, true);
 
-	cv::Mat with_clusters_marked = img;
+	cv::Mat with_clusters_marked = img.clone();
 
 	for (size_t i = 0; i < cluster_lists.size(); ++i) {
 		auto colour = cv::Scalar(
