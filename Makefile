@@ -64,7 +64,7 @@ DIRS=$(EXE_DIR) $(OBJ_DIR) $(DEPS_DIR) \
 EXES= \
 $(EXE_DIR)elements \
 $(EXE_DIR)circuit_graph_test \
-$(EXE_DIR)text
+$(EXE_DIR)text_test
 
 all: $(EXES) | build_info
 
@@ -82,8 +82,8 @@ $(EXE_DIR)circuit_graph_test: \
 	$(OBJ_DIR)circuit_graph/line_finding.o
 
 $(EXE_DIR)text_test: \
-	$(OBJ_DIR)text/text_finder.o
-	$(OBJ_DIR)text/text_test_main.o \
+	$(OBJ_DIR)text/text_finder.o \
+	$(OBJ_DIR)text/text_test_main.o
 
 
 # define extra flags for particular object files

@@ -2,7 +2,7 @@
 
 using namespace cv;
 
-bool pairCompare(const tess_result& firstElem, const tess_result& secondElem) {
+bool pair_compare(const tess_result& firstElem, const tess_result& secondElem) {
   return firstElem.height < secondElem.height;
 }
 
@@ -40,15 +40,15 @@ void text_finder::process()
 	  } while (ri->Next(level));
 	}
     
-    sort(words.begin(), words.end(), pairCompare);
+    sort(words.begin(), words.end(), pair_compare);
 }
 
 void text_finder::save(string output_file)
 {
     Mat image = imread(file.c_str(), 1 );
-    int heightThresh = words.front().height * 2;
+    int heightThresh = words.front().height;
 
-    printf("height thresh %d\n", heightThresh);
+    printf("height thresh is %d\n", heightThresh);
 
     for(const tess_result& word : words)
     {
