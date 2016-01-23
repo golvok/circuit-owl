@@ -28,3 +28,4 @@ train-sch.sublime-workspace
 # Django stuff
 *.sqlite3
 __pycache__/
+media/
