@@ -17,7 +17,7 @@
 **/DEPS/**/*.d
 
 # Executables
-EXE/train-sch
+EXE/**
 
 # YCM compiled config
 .ycm_extra_conf.pyc
