@@ -9,14 +9,16 @@ from .models import Circuit
 
 
 def result(request, result_id):
-    circuit = Circuit.objects.get(pk=result_id)    
+    circuit = Circuit.objects.get(pk=result_id)
     return render(request, 'circuits/result.html', {'circuit':circuit})
 
 def upload(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            instance = Circuit(result_image=request.FILES['file'])
+            instance = Circuit(start_image=request.FILES['file'])
+            instance.save()
+            instance.process()
             instance.save()
             response_data = {'url': reverse('circuits:result', args=(instance.pk,))}
             return JsonResponse(response_data)

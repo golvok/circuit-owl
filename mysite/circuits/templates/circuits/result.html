@@ -16,7 +16,7 @@
                 <div class="cover">
                     <div class="loader"><img id="loader_image" src="{% static 'circuits/images/Loader.gif' %}"></div>
                     <div class="result_shadow"><img id="result_shadow" src="{% static 'circuits/images/dash_fill.png' %}"></div>
-                    <div class="result_image"><img id="result_image" src="{% static 'circuits/images/after.jpg' %}"></div>
+                    <div class="result_image"><img id="result_image" src="{{circuit.result_image.url}}"></div>
                 </div>
             </div>
         </div>

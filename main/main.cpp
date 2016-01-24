@@ -22,10 +22,12 @@ char const* analyze_photo(char const* filename_in, char const* filename_out)
     annotate(elements, words);
     solve_voltages(nodes, elements);
 
+    cvtColor(img, img, CV_GRAY2RGB);    
+
     // Render the anotations
     for(const CircuitNode& node: nodes)
     {
-        cv::putText(img, std::to_string(node.voltage) + "V", node.centroid,  cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,0,0), 1, CV_AA);
+        cv::putText(img, std::to_string(node.voltage) + "V", node.centroid,  cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0,0,255), 1, CV_AA);
     }
 
     imwrite(filename_out, img);

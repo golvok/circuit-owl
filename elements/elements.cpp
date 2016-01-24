@@ -130,10 +130,10 @@ vector<CircuitElement>  get_elements(Mat img_scene){
 	vector<pair<Rect, float>> restistors;
 	vector<pair<Rect, float>> sources;
 
-	Mat img_res_v = imread("circuit_images/resistor_v.png", CV_LOAD_IMAGE_GRAYSCALE);
-	Mat img_res_h = imread("circuit_images/resistor_h.png", CV_LOAD_IMAGE_GRAYSCALE);
-	Mat img_src_v = imread("circuit_images/source_v.png", CV_LOAD_IMAGE_GRAYSCALE);
-	Mat img_src_h = imread("circuit_images/source_h.png", CV_LOAD_IMAGE_GRAYSCALE);
+	Mat img_res_v = imread("/home/aidan/Desktop/Programming/Python/circuit_owl/circuit-owl/circuit_images/resistor_v.png", CV_LOAD_IMAGE_GRAYSCALE);
+	Mat img_res_h = imread("/home/aidan/Desktop/Programming/Python/circuit_owl/circuit-owl/circuit_images/resistor_h.png", CV_LOAD_IMAGE_GRAYSCALE);
+	Mat img_src_v = imread("/home/aidan/Desktop/Programming/Python/circuit_owl/circuit-owl/circuit_images/source_v.png", CV_LOAD_IMAGE_GRAYSCALE);
+	Mat img_src_h = imread("/home/aidan/Desktop/Programming/Python/circuit_owl/circuit-owl/circuit_images/source_h.png", CV_LOAD_IMAGE_GRAYSCALE);
 
 	MatchingMethod( img_scene, img_res_v, restistors, 0.9 );
 	MatchingMethod( img_scene, img_res_h, restistors, 0.9 );
