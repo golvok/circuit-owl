@@ -29,15 +29,17 @@ class CircuitNode
 {
     public:
         CircuitNode()
-            : id(0), voltage(0), element_ids(), changeable(false) {};
+            : id(0), voltage(0), element_ids(), changeable(false), centroid() {};
 
         CircuitNode(int _id, double _v, std::vector<int> _elem, bool _c) 
-            : id(_id), voltage(_v), element_ids(_elem), changeable(_c) {};
+            : id(_id), voltage(_v), element_ids(_elem), changeable(_c), centroid() {};
 
         int id;
         double voltage;
         std::vector<int> element_ids;
         bool changeable;
+
+        cv::Point centroid;
 
         // Some assembly required        
         std::vector<int>::iterator elem_id_begin() {return element_ids.begin();}        
