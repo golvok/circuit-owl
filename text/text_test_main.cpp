@@ -1,5 +1,5 @@
 
-#include <text/text_finder.h>
+#include <text/text_finder.hpp>
 
 // #include <opencv2/text/ocr.hpp>
 #include <tesseract/baseapi.h>
@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 
     text_finder t(input);
     t.process();
-    t.save("/img/output_img.png");
+    t.save("./img/output_img.png");
 
 	return 0;
 }

@@ -53,7 +53,7 @@ LDFLAGS  += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(LIBRARY_LINK_FLAGS)
 .PRECIOUS: $(OBJ_DIR)%.o
 
 # define source directories
-SOURCE_DIRS = circuit_graph/ display/ elements/ text/ utils/./
+SOURCE_DIRS = circuit_graph/ display/ elements/ text/ utils/ analysis/ ./
 
 # compute all directories that might need creation
 DIRS=$(EXE_DIR) $(OBJ_DIR) $(DEPS_DIR) \
@@ -65,7 +65,8 @@ EXES= \
 $(EXE_DIR)elements \
 $(EXE_DIR)circuit_graph_test \
 $(EXE_DIR)text_test \
-$(EXE_DIR)display_test
+$(EXE_DIR)display_test \
+$(EXE_DIR)analysis_test
 
 all: $(EXES) | build_info
 
@@ -92,6 +93,9 @@ $(EXE_DIR)display_test: \
 	$(OBJ_DIR)display/display.o \
 	$(OBJ_DIR)display/display_test_main.o
 
+$(EXE_DIR)analysis_test: \
+	$(OBJ_DIR)analysis/analysis.o \
+    $(OBJ_DIR)analysis/analysis_test_main.o
 
 # define extra flags for particular object files
 # adds graphics include flags to everything in graphics dir
