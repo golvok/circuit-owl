@@ -12,11 +12,12 @@
 }
 
 .description{
-    font-family: "Helvetica";
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
     color: #58595B;
     margin-top:-2px;
-    padding-left:25px;
-    font-size:14px;
+    padding-left:26px;
+    font-size:15px;
 }
 
 .awake{
@@ -71,6 +72,10 @@
     display:block;
 }
 
+.removebutton{
+    float:right;
+}
+
 .cover{
     background-size: 700px 600px;
     background-repeat:none;
@@ -86,6 +91,10 @@
 .content_container{
     height:652px;    
     background-color:#E6E7E8;
+}
+
+.dropzone{
+    height:600px;
 }
 
 .banner{

@@ -7,6 +7,7 @@
         <link href="{% static 'circuits/css/styles.css' %}" type="text/css" rel="stylesheet">
         <link href="{% static 'dropzone/dist/dropzone.css' %}" type="text/css" rel="stylesheet"/>
         <link href="{% static 'dropzone/dist/base.css' %}" type="text/css" rel="stylesheet"/>
+        <!--<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>-->
         <script src="{% static 'dropzone/dist/dropzone.js' %}"></script>
         <script src="{% static 'jquery/jquery.js' %}"></script>
 
@@ -47,15 +48,14 @@
                             myDropzone = this;
          
                             submitButton.addEventListener("click", function() {
-                                myDropzone.processQueue();
-                                $()
                                 // Tell Dropzone to process all queued files.
                             });
          
                             // You might want to show the submit button only when
                             // files are dropped here:
                             this.on("addedfile", function() {
-                                // Show submit button here and/or inform user to click it.
+                                console.log("showing image");
+                                this.processQueue();
                             }); 
                         },
                         
