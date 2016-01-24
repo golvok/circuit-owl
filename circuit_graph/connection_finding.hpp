@@ -9,7 +9,10 @@ namespace cg {
 using ConnectionList = std::vector<size_t>;
 using ListOfConnectionList = std::vector<ConnectionList>;
 
-ListOfConnectionList find_connections(
+std::pair<
+	ListOfConnectionList,
+	std::vector<std::pair<size_t,size_t>>
+> find_connections(
 	const std::vector<cv::Rect>& rects,
 	const ListOfListOfLineIndices& wire_cluster_lists,
 	const utils::ListOfLines& lines,

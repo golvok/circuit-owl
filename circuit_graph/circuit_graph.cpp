@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-std::tuple<cv::Mat,std::vector<CircuitNode>> extract_nodes(const cv::Mat& img, const std::vector<CircuitElement>& elements, bool debug)
+std::tuple<cv::Mat,std::vector<CircuitNode>> extract_nodes(const cv::Mat& img, std::vector<CircuitElement>& elements, bool debug)
 {
 	std::vector<cv::Vec4i> lines_as_vecs = cg::find_lines(img, debug);
 	std::vector<std::pair<cv::Point2i, cv::Point2i>> lines;
@@ -116,7 +116,14 @@ std::tuple<cv::Mat,std::vector<CircuitNode>> extract_nodes(const cv::Mat& img, c
 		cv::waitKey();
 	}
 
-	cg::ListOfConnectionList connection_lists = cg::find_connections(circuit_element_rects, wire_cluster_lists, only_wire_lines, debug);
+	cg::ListOfConnectionList connection_lists;
+	std::vector<std::pair<size_t,size_t>> element_connections;
+	std::tie(connection_lists, element_connections) = cg::find_connections(circuit_element_rects, wire_cluster_lists, only_wire_lines, debug);
+
+	for (size_t i = 0; i < elements.size(); ++i) {
+		elements[i].node_id[0] = element_connections[i].first;
+		elements[i].node_id[1] = element_connections[i].second;
+	}
 
 	if (debug) {
 		size_t index = 0;

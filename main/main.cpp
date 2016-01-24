@@ -8,13 +8,12 @@ char const* analyze_photo(char const* filename)
 {
     cv::Mat img = cv::imread(filename, 0);
 
-    std::vector<CircuitElement> elements;
-    //std::vector<CircuitElement> elements = get_elements(img);
+    std::vector<CircuitElement> elements = get_elements(img);
 
     std::tuple<cv::Mat,std::vector<CircuitNode>> tup = extract_nodes(img, elements);
 
     cv::Mat text_img = std::get<0>(tup);
-    std::vector<CircuitNode> nodes = std::get<1>(tup);
+    std::vector<CircuitNode>& nodes = std::get<1>(tup);
 
     TextFinder t;
     t.process(text_img);

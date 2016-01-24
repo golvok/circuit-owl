@@ -32,6 +32,14 @@ void annotate(std::vector<CircuitElement>& elements, std::vector<TessResult>& te
 
 void solve_voltages(std::vector<CircuitNode>& nodes, std::vector<CircuitElement>& elements)
 {
+    auto v_src_iter = std::find_if(elements.begin(), elements.end(), [&](CircuitElement& elem) {
+        return elem.type == 1;
+    });
+
+    if (v_src_iter != elements.end()) {
+        nodes[v_src_iter->node_id[0]].voltage = v_src_iter->val;
+    }
+
     bool done_iteration = false;
     while (!done_iteration)
     {
