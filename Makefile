@@ -107,7 +107,8 @@ $(EXE_DIR)main: \
 	$(OBJ_DIR)analysis/analysis.o \
 	$(OBJ_DIR)display/display.o \
 	$(OBJ_DIR)elements/elements.o \
-	$(OBJ_DIR)text/text_finder.o
+	$(OBJ_DIR)text/text_finder.o \
+	$(OBJ_DIR)circuit_graph/circuit_graph.o
 
 # define extra flags for particular object files
 # adds graphics include flags to everything in graphics dir

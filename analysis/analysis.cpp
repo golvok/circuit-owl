@@ -9,7 +9,7 @@ int calc_dist(Point& p1, Point& p2)
     return sqrt(pow(p2.y - p1.y, 2) + pow(p2.x - p1.x, 2));
 }   
 
-void annotate(vector<CircuitElement>& elements, vector<TessResult>& texts)
+void annotate(std::vector<CircuitElement>& elements, std::vector<TessResult>& texts)
 {
     for(CircuitElement& element : elements)
     {
@@ -30,7 +30,7 @@ void annotate(vector<CircuitElement>& elements, vector<TessResult>& texts)
     }
 }
 
-void solve_voltages(vector<CircuitNode>& nodes, vector<CircuitElement>& elements)
+void solve_voltages(std::vector<CircuitNode>& nodes, std::vector<CircuitElement>& elements)
 {
     bool done_iteration = false;
     while (!done_iteration)

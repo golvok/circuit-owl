@@ -22,8 +22,10 @@ int main(int argc, char** argv) {
 
     string input(argv[1]);
 
-    TextFinder t(input);
-    t.process();
+    cv::Mat img = cv::imread(input, 0);
+
+    TextFinder t;
+    t.process(img);
     t.save("./img/output_img.png");
 
 	return 0;

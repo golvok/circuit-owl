@@ -7,20 +7,25 @@ bool pair_compare(const TessResult& firstElem, const TessResult& secondElem) {
   return firstElem.height < secondElem.height;
 }
 
-void TextFinder::process()
+void TextFinder::process(const cv::Mat& image)
 {
     tesseract::TessBaseAPI tess;
 
 	if (tess.Init(nullptr, "eng")) {
 		throw runtime_error("could not init tesseract");
 	}
-    
-    printf("opening file %s\n", file.c_str());
 
-	auto pix_up = std::unique_ptr<Pix>(pixRead(file.c_str()));
+    //----OpenCV to tesseract
+    cv::Mat gray;
+    cv::cvtColor(image, gray, CV_BGR2GRAY);
+    // ...other image pre-processing here...    
+    tess.SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
+    tess.SetImage((uchar*)gray.data, gray.cols, gray.rows, 1, gray.cols);
+
+	//auto pix_up = std::unique_ptr<Pix>(pixRead(file.c_str()));
 	tess.SetVariable("save_blob_choices", "T");
 	// tess.SetVariable("tessedit_char_whitelist", "1234567890RVA"); //makes it worse somehow...
-	tess.SetImage(pix_up.get());
+	//tess.SetImage(pix_up.get());
 	tess.Recognize(NULL);
 
 	tesseract::ResultIterator* ri = tess.GetIterator();
@@ -62,7 +67,7 @@ void TextFinder::process()
 
 void TextFinder::save(std::string output_file)
 {
-    cv::Mat image = imread(file.c_str(), 1 );
+    cv::Mat image = imread(output_file.c_str(), 1 );
     int heightThresh = words.front().height;
 
     printf("height thresh is %d\n", heightThresh);

@@ -47,7 +47,7 @@ class CircuitNode
 /*
 BOOST_PYTHON_MODULE(circuit_common)
 {
-    using namespace boost::python;    
+    using namespace boost::python;
 
     class_<CircuitElement>("CircuitElement")
         .def_readwrite("id", &CircuitElement::id)

@@ -23,14 +23,13 @@ struct TessResult
 class TextFinder
 {
     public:
-        TextFinder(std::string file_path) : file(file_path), words() {};
+        TextFinder() : words() {};
         
-        void save(std::string output_file);
-        void process();
+        void process(const cv::Mat& image);
+        void save(std::string output_file);        
         const std::vector<TessResult>& get_words() { return words; }
 
     private:
-        std::string file;
         std::vector<TessResult> words;
 };
 
