@@ -4,9 +4,9 @@
 #include <elements/elements.hpp>
 
 
-char const* analyze_photo(char const* filename)
+char const* analyze_photo(char const* filename_in, char const* filename_out)
 {
-    cv::Mat img = cv::imread(filename, 0);
+    cv::Mat img = cv::imread(filename_in, 0);
 
     std::vector<CircuitElement> elements = get_elements(img);
 
@@ -28,19 +28,18 @@ char const* analyze_photo(char const* filename)
         cv::putText(img, std::to_string(node.voltage) + "V", node.centroid,  cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,0,0), 1, CV_AA);
     }
 
-    std::string out_file = std::string(filename) + ".out";
-    imwrite(out_file, img);
+    imwrite(filename_out, img);
 
-    return out_file.c_str();
+    return filename_out;
 }
 
 int main(int argc, char** argv)
 {
-    if (argc != 2) {
-        std::cout << "expects exactly one param, the image path\n";
+    if (argc != 3) {
+        std::cout << "expects exactly two params, the image input path and image output path\n";
         return -1;
     }
 
-    char const* out_file = analyze_photo(argv[1]);
+    char const* out_file = analyze_photo(argv[1], argv[2]);
     (void)out_file;
 }
