@@ -45,14 +45,23 @@ std::vector<std::pair<Rect,float>> anneal(std::vector<std::pair<Rect,float>> mat
 {
 	vector<pair<Rect, float>> clusters;
 	for(auto res : matches)
-	{		
+	{
+		bool is_cluster = true;
 		for (auto& cluster : clusters)
 		{
 			if((res.first & cluster.first).area() != 0)
 			{
 				cluster.first = res.first | cluster.first;
 				cluster.second = std::max(cluster.second, res.second);
+
+				is_cluster = false;
+				break;
 			}
+		}
+
+		if (is_cluster)
+		{
+			clusters.push_back(res);
 		}
 	}
 	return clusters;
@@ -103,7 +112,7 @@ void MatchingMethod( Mat img_scene, Mat templat, vector<pair<Rect,float>>& match
 		Point matchLoc = locations.front();
 		rectangle( img_display, matchLoc, Point( matchLoc.x + templat.cols , matchLoc.y + templat.rows ), Scalar::all(0), 2, 8, 0 );
 
-		matches.emplace_back(Rect(matchLoc.x, matchLoc.y, templat.cols, templat.rows), result.at<float>(matchLoc.y,matchLoc.x));
+		matches.emplace_back(Rect(matchLoc.x, matchLoc.y, templat.cols, templat.rows), result.at<float>(matchLoc.y, matchLoc.x));
 
 		locations.pop();
 	}
@@ -137,8 +146,12 @@ vector<CircuitElement>  get_elements(Mat img_scene){
 	std::vector<std::pair<Rect,float>> res_c = anneal(restistors);
 	std::vector<std::pair<Rect,float>> src_c = anneal(sources);
 
-	int id = 0;
-	
+	int id = 0;	
+
+	std::cout << "un-annealed elements: " << restistors.size() + sources.size() << std::endl;
+	std::cout << "Annealed elements: " << res_c.size() + src_c.size() << std::endl;
+
+
 	for(auto res : res_c)
 	{	
 		bool biggest = true;
@@ -188,6 +201,8 @@ vector<CircuitElement>  get_elements(Mat img_scene){
 			id++;
 		}
 	}
+
+	std::cout << "Number of elements detected: " << v.size() << std::endl;
 	
 	return v;
 }
