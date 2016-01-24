@@ -4,13 +4,13 @@
 #include <elements/elements.hpp>
 
 
-char const* analyze_photo(char const* filename_in, char const* filename_out)
+char const* analyze_photo(char const* filename_in, char const* filename_out, bool debug)
 {
     cv::Mat img = cv::imread(filename_in, 0);
 
     std::vector<CircuitElement> elements = get_elements(img);
 
-    std::tuple<cv::Mat,std::vector<CircuitNode>> tup = extract_nodes(img, elements);
+    std::tuple<cv::Mat,std::vector<CircuitNode>> tup = extract_nodes(img, elements, debug);
 
     cv::Mat text_img = std::get<0>(tup);
     std::vector<CircuitNode>& nodes = std::get<1>(tup);
@@ -30,7 +30,14 @@ char const* analyze_photo(char const* filename_in, char const* filename_out)
         cv::putText(img, std::to_string(node.voltage) + "V", node.centroid,  cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0,0,255), 1, CV_AA);
     }
 
-    imwrite(filename_out, img);
+    if (debug) {
+        cv::imshow("final result", img);
+        cv::waitKey();
+    }
+
+    if (strcmp(filename_out,"/dev/null") != 0) {
+        imwrite(filename_out, img);
+    }
 
     return filename_out;
 }
@@ -42,6 +49,6 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    char const* out_file = analyze_photo(argv[1], argv[2]);
+    char const* out_file = analyze_photo(argv[1], argv[2], false);
     (void)out_file;
 }

@@ -5,7 +5,7 @@
 
 //----Top-level function
 //------------------------------------------------------------
-char const* analyze_photo(char const* filename_in, char const* filename_out);
+// char const* analyze_photo(char const* filename_in, char const* filename_out);
 
 // BOOST_PYTHON_MODULE(circuit_analyzer)
 // {

@@ -43,7 +43,7 @@ std::pair<
 					|| utils::line_segs_near(line, utils::Line(bl, tl), distance_thresh)
 				) {
 					if (debug) {
-						std::cout << line << " intersects " << rect << ". Connects wire " << connection_lists.size() << " to elem " << rect_index << '\n';
+						std::cout << line << " intersects " << rect << ". Connects wire " << (connection_lists.size() - 1) << " to elem " << rect_index << '\n';
 
 						cv::Mat dbg_img = cv::Mat::zeros(400, 640, CV_8U);
 						cv::rectangle(dbg_img, rect, 128, CV_FILLED);
@@ -86,12 +86,12 @@ std::pair<
 						case 0:
 						case 3:
 							// case right & top
-							element_connections[rect_index].first = connection_lists.size();
+							element_connections[rect_index].first = (connection_lists.size() - 1);
 						break;
 						case 1:
 						case 2:
 							// case left & bottom
-							element_connections[rect_index].second = connection_lists.size();
+							element_connections[rect_index].second = (connection_lists.size() - 1);
 						break;
 					}
 

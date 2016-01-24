@@ -38,6 +38,9 @@ void solve_voltages(std::vector<CircuitNode>& nodes, std::vector<CircuitElement>
 
     if (v_src_iter != elements.end()) {
         nodes[v_src_iter->node_id[0]].voltage = v_src_iter->val;
+        nodes[v_src_iter->node_id[0]].changeable = false;
+        nodes[v_src_iter->node_id[1]].voltage = 0;
+        nodes[v_src_iter->node_id[1]].changeable = false;
     }
 
     bool done_iteration = false;
