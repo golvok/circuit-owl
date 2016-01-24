@@ -105,7 +105,7 @@ ListOfListOfLineIndices::const_iterator cluster_most_likely_to_be_circuit(const 
 		for (const auto& line_index : cluster_list) {
 			const auto& line = lines[line_index];
 			// expand by the bound of the line
-			bound |= cv::Rect(line.first, first_line.second);
+			bound |= cv::Rect(line.first, line.second);
 		}
 
 		if (best_area < bound.area()) {

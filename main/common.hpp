@@ -29,10 +29,13 @@ class CircuitNode
 {
     public:
         CircuitNode()
-            : id(0), voltage(0), element_ids(), changeable(false), centroid() {};
+            : id(0), voltage(0), element_ids(), changeable(true), centroid() {};
 
-        CircuitNode(int _id, double _v, std::vector<int> _elem, bool _c) 
+        CircuitNode(int _id, double _v, std::vector<int> _elem, bool _c)
             : id(_id), voltage(_v), element_ids(_elem), changeable(_c), centroid() {};
+
+        CircuitNode(int _id, std::vector<int> _elem, cv::Point _centroid)
+            : id(_id), voltage(0), element_ids(_elem), changeable(true), centroid(_centroid) {};
 
         int id;
         double voltage;
@@ -45,6 +48,13 @@ class CircuitNode
         std::vector<int>::iterator elem_id_begin() {return element_ids.begin();}        
         std::vector<int>::iterator elem_id_end() {return element_ids.end();}
 };
+
+inline std::ostream& operator<<(std::ostream& os, const CircuitNode& node) {
+    os << "CircuitNode: id=" << node.id << " -> ";
+    std::copy(node.element_ids.begin(), node.element_ids.end(), std::ostream_iterator<int>(os, ", "));
+    os << ", V=" << node.voltage << ", changeable=" << node.changeable << ", centroid=" << node.centroid;
+    return os;
+}
 
 /*
 BOOST_PYTHON_MODULE(circuit_common)

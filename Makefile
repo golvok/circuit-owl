@@ -86,9 +86,11 @@ $(EXE_DIR)elements: \
 
 $(EXE_DIR)circuit_graph_test: \
 	$(OBJ_DIR)circuit_graph/circuit_graph_test_main.o \
+	$(OBJ_DIR)circuit_graph/circuit_graph.o \
 	$(OBJ_DIR)circuit_graph/connection_finding.o \
 	$(OBJ_DIR)circuit_graph/line_clustering.o \
 	$(OBJ_DIR)circuit_graph/line_finding.o \
+	$(OBJ_DIR)elements/elements.o \
 	$(OBJ_DIR)utils/geometry_utils.o
 
 $(EXE_DIR)text_test: \
@@ -109,7 +111,11 @@ $(EXE_DIR)main: \
 	$(OBJ_DIR)display/display.o \
 	$(OBJ_DIR)elements/elements.o \
 	$(OBJ_DIR)text/text_finder.o \
-	$(OBJ_DIR)circuit_graph/circuit_graph.o
+	$(OBJ_DIR)circuit_graph/circuit_graph.o \
+	$(OBJ_DIR)circuit_graph/connection_finding.o \
+	$(OBJ_DIR)circuit_graph/line_clustering.o \
+	$(OBJ_DIR)circuit_graph/line_finding.o \
+	$(OBJ_DIR)utils/geometry_utils.o
 
 # define extra flags for particular object files
 # adds graphics include flags to everything in graphics dir

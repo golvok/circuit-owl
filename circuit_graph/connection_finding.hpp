@@ -12,7 +12,8 @@ using ListOfConnectionList = std::vector<ConnectionList>;
 ListOfConnectionList find_connections(
 	const std::vector<cv::Rect>& rects,
 	const ListOfListOfLineIndices& wire_cluster_lists,
-	const utils::ListOfLines& lines
+	const utils::ListOfLines& lines,
+	bool debug
 );
 
 } // end namespace cg

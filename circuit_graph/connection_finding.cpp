@@ -12,7 +12,8 @@ namespace cg {
 ListOfConnectionList find_connections(
 	const std::vector<cv::Rect>& rects,
 	const ListOfListOfLineIndices& wire_cluster_lists,
-	const utils::ListOfLines& lines
+	const utils::ListOfLines& lines,
+	bool debug
 ) {
 
 	ListOfConnectionList connection_lists;
@@ -35,15 +36,17 @@ ListOfConnectionList find_connections(
 					|| utils::line_segs_near(lines[line_index], utils::Line(bl, tl), distance_thresh)
 				) {
 					connection_lists.back().push_back(rect_index);
-					std::cout << lines[line_index] << " intersects " << rects[rect_index] << ". Connects wire " << (connection_lists.size() - 1) << " to elem " << rect_index << '\n';
-					
-					cv::Mat dbg_img = cv::Mat::zeros(400, 640, CV_8U);
-					cv::rectangle(dbg_img, rects[rect_index], 128, CV_FILLED);
-					cv::line(dbg_img, lines[line_index].first, lines[line_index].second, 255, 2);
+					if (debug) {
+						std::cout << lines[line_index] << " intersects " << rects[rect_index] << ". Connects wire " << (connection_lists.size() - 1) << " to elem " << rect_index << '\n';
 
-					cv::imshow("debug rect intersect", dbg_img);
-					cv::waitKey();
-					
+						cv::Mat dbg_img = cv::Mat::zeros(400, 640, CV_8U);
+						cv::rectangle(dbg_img, rects[rect_index], 128, CV_FILLED);
+						cv::line(dbg_img, lines[line_index].first, lines[line_index].second, 255, 2);
+
+						cv::imshow("debug rect intersect", dbg_img);
+						cv::waitKey();
+					}
+
 					break;
 				}
 			}
