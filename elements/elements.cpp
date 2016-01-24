@@ -58,7 +58,14 @@ void MatchingMethod( Mat img_scene, Mat templat, vector<Rect>& rects, double thr
 	/// Do the Matching and Normalize
 	matchTemplate( img_display, templat, result, CV_TM_CCOEFF_NORMED );
 	float max = find_max(result);
-	if (max < 0.5) {
+	if (max < 0.7) {
+
+		// cout << max << " returning" << endl;
+
+		// imshow( "image_window", img_display );
+		// imshow( "result_window", result );
+
+		waitKey(0);
 		return;
 	}
 	cout << max << endl;
@@ -80,15 +87,15 @@ void MatchingMethod( Mat img_scene, Mat templat, vector<Rect>& rects, double thr
 		locations.pop();
 	}
 
-	imshow( "image_window", img_display );
-	imshow( "result_window", result );
+	// imshow( "image_window", img_display );
+	// imshow( "result_window", result );
 
-	waitKey(0);
+	// waitKey(0);
 
 	return;
 }
 
-void get_elements(Mat img_scene){
+vector<CircuitElement>  get_elements(Mat img_scene){
 	vector<Rect> restistors;
 	vector<Rect> sources;
 
@@ -101,6 +108,25 @@ void get_elements(Mat img_scene){
 	MatchingMethod( img_scene, img_res_h, restistors, 0.9 );
 	MatchingMethod( img_scene, img_src_v, sources, 0.9);
 	MatchingMethod( img_scene, img_src_h, sources, 0.9);
+
+	int id = 0;
+	vector<CircuitElement> v;
+	while (!restistors.empty()){
+		Rect r = restistors.front();
+		v.push_back(CircuitElement( id, Point( r.x, r.y ), Point( r.x + r.width , r.y + r.height ), 0, 0));
+		restistors.pop_back();
+		id++;
+	}
+
+	while (!sources.empty()){
+		Rect r = sources.front();
+		v.push_back(CircuitElement( id, Point( r.x, r.y ), Point( r.x + r.width , r.y + r.height ), 0, 0));
+		sources.pop_back();
+		id++;
+	}
+
+	// return pair<restistors,sources>;
+	return v;
 }
 
 /** @function readme */

@@ -21,7 +21,7 @@ class CircuitElement
         cv::Point NE;
         cv::Point SW;
         int val;
-        int type;
+        int type; // 0 is resistor
         int node_id[2];
 };
 

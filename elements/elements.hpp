@@ -2,6 +2,7 @@
 #define INCLUDE_ELEMENTS
 
 #include <utils/geometry_utils.hpp>
+#include <main/common.hpp>
 
 #include <opencv2/imgproc/imgproc_c.h>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -20,8 +21,8 @@
 void readme();
 void detectAndDisplay_harr( cv::Mat frame );
 void detectAndDisplay_homography( cv::Mat img_scene, cv::Mat img_object );
-void maxLocs(const cv::Mat& src, std::queue<Point>& dst);
+void maxLocs(const cv::Mat& src, std::queue<cv::Point>& dst);
 void MatchingMethod( cv::Mat img_scene, cv::Mat templat, std::vector<cv::Rect>& rects, double thresh );
-void get_elements(cv::Mat img_scene);
+std::vector<CircuitElement> get_elements(cv::Mat img_scene);
 
 #endif
