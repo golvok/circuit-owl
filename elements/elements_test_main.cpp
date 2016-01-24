@@ -21,17 +21,19 @@
 using namespace cv;
 using namespace std;
 
+typedef Rect_<int> Rect;
+
 void readme();
 void detectAndDisplay_harr( Mat frame );
 void detectAndDisplay_homography( Mat img_scene, Mat img_object );
 void maxLocs(const Mat& src, queue<Point>& dst);
-void MatchingMethod( Mat img_scene, Mat templat );
+void MatchingMethod( Mat img_scene, Mat templat, vector<Rect>& rects, double thresh );
 
-String resistor_cascade_name = "resistor_model.xml";
-String source_cascade_name = "haarcascade_frontalface_alt.xml";
-CascadeClassifier resistor_cascade;
-CascadeClassifier source_cascade;
-string window_name = "window_name";
+
+Mat img_res_v = imread("circuit_images/resistor_v.png", CV_LOAD_IMAGE_GRAYSCALE);
+Mat img_res_h = imread("circuit_images/resistor_h.png", CV_LOAD_IMAGE_GRAYSCALE);
+Mat img_src_v = imread("circuit_images/source_v.png", CV_LOAD_IMAGE_GRAYSCALE);
+Mat img_src_h = imread("circuit_images/source_h.png", CV_LOAD_IMAGE_GRAYSCALE);
 
 /** @function main */
 int main( int argc, char** argv )
@@ -39,41 +41,18 @@ int main( int argc, char** argv )
 	if( argc < 1)
 	{ readme(); return -1; }
 
-	Mat frame_homo = imread( argv[1] );
+	Mat img_scene = imread( argv[1], CV_LOAD_IMAGE_GRAYSCALE );
 
-	Mat img_object = imread( argv[1], CV_LOAD_IMAGE_GRAYSCALE );
-	Mat img_scene = imread( argv[2], CV_LOAD_IMAGE_GRAYSCALE );
+	vector<Rect> restistors;
+	vector<Rect> sources;
 
-	if( !resistor_cascade.load( resistor_cascade_name ) ){ printf("--(!)Error loading\n"); return -1; };
-	if( !source_cascade.load( source_cascade_name ) ){ printf("--(!)Error loading\n"); return -1; };
 
-	MatchingMethod( img_scene, img_object );
-
+	MatchingMethod( img_scene, img_res_v, restistors, 0.9 );
+	MatchingMethod( img_scene, img_res_h, restistors, 0.9 );
+	MatchingMethod( img_scene, img_src_v, sources, 0.9);
+	MatchingMethod( img_scene, img_src_h, sources, 0.9);
 
 	return 0;
-}
-
-void detectAndDisplay_harr( Mat frame )
-{
-	std::vector<Rect> resistors;
-	Mat frame_gray;
-
-	cvtColor( frame, frame_gray, CV_BGR2GRAY );
-	equalizeHist( frame_gray, frame_gray );
-
-	//-- Detect resistors
-	resistor_cascade.detectMultiScale( frame_gray, resistors, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30, 30) );
-
-	cout << "here1" << endl;
-	for( size_t i = 0; i < resistors.size(); i++ )
-	{
-		Point center( resistors[i].x + resistors[i].width*0.5, resistors[i].y + resistors[i].height*0.5 );
-		ellipse( frame, center, Size( resistors[i].width*0.5, resistors[i].height*0.5), 0, 0, 360, Scalar( 255, 0, 255 ), 4, 8, 0 );
-	}
-	cout << "here1" << endl;
-
-	imwrite( "image_harr.jpg", frame );
-	return;
 }
 
 void maxLocs(const Mat& src, queue<Point>& dst)
@@ -87,14 +66,7 @@ void maxLocs(const Mat& src, queue<Point>& dst)
         {
             if(srcData[i*src.cols + j] > 0)
             {
-                // maxValue = srcData[i*src.cols + j];
-
                 dst.push(Point(j, i));
-
-                // if(dst.size() > size)
-                // {
-                //     dst.pop();
-                // }
             }
         }
     }
@@ -119,7 +91,7 @@ float find_max(const Mat& mat)
     return maxValue;
 }
 
-void MatchingMethod( Mat img_scene, Mat templat )
+void MatchingMethod( Mat img_scene, Mat templat, vector<Rect>& rects, double thresh )
 {
     /// Source image to display
     Mat img_display;
@@ -136,10 +108,11 @@ void MatchingMethod( Mat img_scene, Mat templat )
     /// Do the Matching and Normalize
     matchTemplate( img_display, templat, result, CV_TM_CCOEFF_NORMED );
     float max = find_max(result);
+    if (max < 0.5) {
+    	return;
+    }
     cout << max << endl;
-    threshold( result, result, max*0.9, 255,THRESH_BINARY );
-
-    // normalize( result, result, 0, 1, NORM_MINMAX, -1, Mat() );
+    threshold( result, result, max*thresh, 255,THRESH_BINARY);
 
     queue<Point> locations;
     maxLocs(result, locations);
@@ -151,6 +124,9 @@ void MatchingMethod( Mat img_scene, Mat templat )
     {
         Point matchLoc = locations.front();
         rectangle( img_display, matchLoc, Point( matchLoc.x + templat.cols , matchLoc.y + templat.rows ), Scalar::all(0), 2, 8, 0 );
+
+        rects.push_back(Rect(matchLoc.x, matchLoc.y, templat.cols, templat.rows));
+
         locations.pop();
     }
 
