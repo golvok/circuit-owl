@@ -23,13 +23,7 @@ ListOfListOfLineIndices cluster_lines(const std::vector<std::pair<cv::Point2i, c
 				// std::cout << "checking against " << clustered_line << '\n';
 
 				// check if that line should be clustered in this cluster
-				if ( false
-					|| utils::intersects(lines[i], clustered_line)
-					|| utils::minimum_distance(lines[i], clustered_line.first ) < distance_thresh
-					|| utils::minimum_distance(lines[i], clustered_line.second) < distance_thresh
-					|| utils::minimum_distance(clustered_line, lines[i].first ) < distance_thresh
-					|| utils::minimum_distance(clustered_line, lines[i].second) < distance_thresh
-				) {
+				if (utils::line_segs_near(lines[i], clustered_line, distance_thresh)) {
 					// std::cout << "clustering " << i << " in " << cluster_list.size() << '\n';
 					clusters_this_line_is_in.push_back(cluster_list_index);
 					break;

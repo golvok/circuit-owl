@@ -88,4 +88,15 @@ bool intersects(const std::pair<cv::Point2i, cv::Point2i>& line1, const std::pai
 	return false; // Doesn't fall in any of the above cases
 }
 
+bool line_segs_near(const Line& l1, const Line& l2, float distance_thresh) {
+	return false
+		|| utils::intersects(l1, l2)
+		|| utils::minimum_distance(l1, l2.first ) < distance_thresh
+		|| utils::minimum_distance(l1, l2.second) < distance_thresh
+		|| utils::minimum_distance(l2, l1.first ) < distance_thresh
+		|| utils::minimum_distance(l2, l1.second) < distance_thresh
+	;
+}
+
+
 } // end namespace utils

@@ -86,6 +86,7 @@ $(EXE_DIR)elements: \
 
 $(EXE_DIR)circuit_graph_test: \
 	$(OBJ_DIR)circuit_graph/circuit_graph_test_main.o \
+	$(OBJ_DIR)circuit_graph/connection_finding.o \
 	$(OBJ_DIR)circuit_graph/line_clustering.o \
 	$(OBJ_DIR)circuit_graph/line_finding.o \
 	$(OBJ_DIR)utils/geometry_utils.o

@@ -1,4 +1,7 @@
 
+#ifndef CG_LINE_CLUSTERING_HPP
+#define CG_LINE_CLUSTERING_HPP
+
 #include <utils/geometry_utils.hpp>
 
 #include <opencv2/core/core.hpp>
@@ -13,3 +16,5 @@ ListOfListOfLineIndices cluster_lines(const std::vector<std::pair<cv::Point2i, c
 ListOfListOfLineIndices::const_iterator cluster_most_likely_to_be_circuit(const ListOfListOfLineIndices& cluster_lists, const utils::ListOfLines& lines);
 
 } // end namespace cg
+
+#endif /* CG_LINE_CLUSTERING_HPP */

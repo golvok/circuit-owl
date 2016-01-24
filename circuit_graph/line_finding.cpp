@@ -1,6 +1,9 @@
 
 #include "line_finding.hpp"
 
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
 #include <iostream>
 
 namespace cg {
@@ -41,7 +44,7 @@ std::vector<cv::Vec4i> find_lines(const cv::Mat& img_src, bool debug) {
 	// cv::waitKey();
 
 	std::vector<cv::Vec4i> lines;
-	cv::HoughLinesP(skel, lines, 1, CV_PI/180, 4, 0, 10);
+	cv::HoughLinesP(skel, lines, 1, CV_PI/180, 4, 1, 10);
 	
 	if (debug) {
 		std::cout << "found " << lines.size() << " lines\n";
