@@ -29,3 +29,4 @@ train-sch.sublime-workspace
 *.sqlite3
 __pycache__/
 media/
+mysite/components/
