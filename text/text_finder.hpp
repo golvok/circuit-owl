@@ -13,10 +13,12 @@ using namespace cv;
 
 struct tess_result
 {
-    tess_result(Point _SW, Point _NE, string _word) : SW(_SW), NE(_NE), word(_word), height(_NE.y-_SW.y) {};
+    tess_result(Point _SW, Point _NE, int _val, string _unit) 
+    : SW(_SW), NE(_NE), val(_val), unit(_unit), height(_NE.y-_SW.y) {};
     Point SW;
     Point NE;
-    string word;
+    int val;
+    string unit;
     int height;
 };
 
@@ -33,3 +35,4 @@ class text_finder
     string file;
     vector<tess_result> words;
 };
+

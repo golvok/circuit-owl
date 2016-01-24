@@ -7,7 +7,7 @@ namespace cg {
 
 std::vector<cv::Vec4i> find_lines(const cv::Mat& img_src, bool debug) {
 
-	cv::Mat inverted = img_src;
+	cv::Mat inverted = img_src.clone();
 	cv::bitwise_not(inverted,inverted);
 	cv::threshold(inverted, inverted, 127, 255, cv::THRESH_BINARY);
 	cv::Mat skel(inverted.size(), CV_8UC1, cv::Scalar(0));
@@ -33,15 +33,15 @@ std::vector<cv::Vec4i> find_lines(const cv::Mat& img_src, bool debug) {
 		cv::waitKey();
 	}
 
-	cv::Mat dst, cdst;
-	cv::Canny(skel, dst, 50, 200, 3);
+	cv::Mat dst = skel.clone();
+	cv::Mat cdst;
 	cv::cvtColor(dst, cdst, cv::COLOR_GRAY2BGR);
 
 	// cv::imshow("Canny", dst);
 	// cv::waitKey();
 
 	std::vector<cv::Vec4i> lines;
-	cv::HoughLinesP(skel, lines, 1, CV_PI/180, 5, 0, 10 );
+	cv::HoughLinesP(skel, lines, 1, CV_PI/180, 4, 0, 10);
 	
 	if (debug) {
 		std::cout << "found " << lines.size() << " lines\n";
@@ -51,7 +51,7 @@ std::vector<cv::Vec4i> find_lines(const cv::Mat& img_src, bool debug) {
 	{
 		cv::Vec4i l = lines[i];
 		auto colour = cv::Scalar((i%3==0)*255,(i%3==1)*255,(i%3==2)*255);
-		cv::line( cdst, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), colour, 3, CV_AA);
+		cv::line( cdst, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), colour, 1, CV_AA);
 	}
 
 	if (debug) {

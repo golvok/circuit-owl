@@ -1,14 +1,12 @@
 
 #include "line_clustering.hpp"
 
-#include <utils/geometry_utils.hpp>
-
 #include <iostream>
 
 namespace cg {
 
-std::vector<std::vector<size_t>> cluster_lines(const std::vector<std::pair<cv::Point2i, cv::Point2i>>& lines , const float distance_thresh, const bool debug) {
-	std::vector<std::vector<size_t>> cluster_lists;
+ListOfListOfLineIndices cluster_lines(const std::vector<std::pair<cv::Point2i, cv::Point2i>>& lines , const float distance_thresh, const bool debug) {
+	ListOfListOfLineIndices cluster_lists;
 
 	// iterate over the lines
 	for (size_t i = 0; i < lines.size(); ++i) {
@@ -78,7 +76,7 @@ std::vector<std::vector<size_t>> cluster_lines(const std::vector<std::pair<cv::P
 
 	{
 		// remove empty oness
-		std::vector<std::vector<size_t>> new_cluster_lists;
+		ListOfListOfLineIndices new_cluster_lists;
 		for (auto& cluster_list : cluster_lists) {
 			if (cluster_list.empty() == false) {
 				new_cluster_lists.emplace_back(std::move(cluster_list));
@@ -97,6 +95,32 @@ std::vector<std::vector<size_t>> cluster_lines(const std::vector<std::pair<cv::P
 
 	return cluster_lists;
 
+}
+
+ListOfListOfLineIndices::const_iterator cluster_most_likely_to_be_circuit(const ListOfListOfLineIndices& cluster_lists, const utils::ListOfLines& lines) {
+	float best_area = -1;
+	ListOfListOfLineIndices::const_iterator best_cluster_iter = cluster_lists.end();
+
+	for (auto cl_iter = cluster_lists.begin(); cl_iter != cluster_lists.end(); ++cl_iter) {
+		const auto& cluster_list = *cl_iter;
+		const auto& first_line = lines[cluster_list.front()];
+
+		// init to the first line
+		cv::Rect bound(first_line.first, first_line.second);
+
+		for (const auto& line_index : cluster_list) {
+			const auto& line = lines[line_index];
+			// expand by the bound of the line
+			bound |= cv::Rect(line.first, first_line.second);
+		}
+
+		if (best_area < bound.area()) {
+			best_area = bound.area();
+			best_cluster_iter = cl_iter;
+		}
+	}
+
+	return best_cluster_iter;
 }
 
 } // end namespace cg

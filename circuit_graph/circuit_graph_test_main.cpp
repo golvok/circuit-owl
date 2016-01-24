@@ -30,9 +30,9 @@ int main(int argc, char** argv) {
 	}
 
 	const float NEARNESS_THRESH = 5; // in pixels
-	std::vector<std::vector<size_t>> cluster_lists = cg::cluster_lines(lines, NEARNESS_THRESH, true);
+	cg::ListOfListOfLineIndices cluster_lists = cg::cluster_lines(lines, NEARNESS_THRESH, true);
 
-	cv::Mat with_clusters_marked = img;
+	cv::Mat with_clusters_marked = img.clone();
 
 	for (size_t i = 0; i < cluster_lists.size(); ++i) {
 		auto colour = cv::Scalar(
@@ -47,5 +47,18 @@ int main(int argc, char** argv) {
 	}
 
 	cv::imshow("with clusters", with_clusters_marked);
+	cv::waitKey();
+
+	const auto& circuit_cluster = *cg::cluster_most_likely_to_be_circuit(cluster_lists, lines);
+
+	cv::Mat with_circuit_removed = img.clone();
+
+	auto overwrite_colour = cv::Scalar(255, 255, 255);
+	const float overwrite_width = 6;
+	for (const auto& line_index : circuit_cluster) {
+		cv::line(with_circuit_removed, lines[line_index].first, lines[line_index].second, overwrite_colour, overwrite_width, CV_AA);
+	}
+
+	cv::imshow("with circuit removed", with_circuit_removed);
 	cv::waitKey();
 }
