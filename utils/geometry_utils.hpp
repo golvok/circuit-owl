@@ -25,4 +25,6 @@ int orientation(cv::Point2i p, cv::Point2i q, cv::Point2i r);
 
 bool intersects(const std::pair<cv::Point2i, cv::Point2i>& line1, const std::pair<cv::Point2i, cv::Point2i>& line2);
 
+bool line_segs_near(const Line& l1, const Line& l2, float distance_thresh);
+
 } // end namespace utils
