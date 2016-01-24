@@ -20,6 +20,14 @@
     font-size:15px;
 }
 
+.drag{
+    padding-left:560px;
+    padding-top:530px;
+    height:50px;
+    width:100%;
+    position:absolute;
+}
+
 .awake{
     position:absolute;
     padding-left:360px;
