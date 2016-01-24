@@ -8,31 +8,29 @@
 #include <iostream>
 #include <memory>
 
-using namespace std;
-using namespace cv;
-
-struct tess_result
+struct TessResult
 {
-    tess_result(Point _SW, Point _NE, int _val, string _unit) 
+    TessResult(cv::Point _SW, cv::Point _NE, int _val, std::string _unit) 
     : SW(_SW), NE(_NE), val(_val), unit(_unit), height(_NE.y-_SW.y) {};
-    Point SW;
-    Point NE;
+
+    cv::Point SW;
+    cv::Point NE;
     int val;
-    string unit;
+    std::string unit;
     int height;
 };
 
-class text_finder
+class TextFinder
 {
     public:
-    text_finder(string file_path) : file(file_path), words() {};
-    
-    void save(string output_file);
-    void process();
-    const vector<tess_result>& get_words() { return words; }
+        TextFinder(std::string file_path) : file(file_path), words() {};
+        
+        void save(std::string output_file);
+        void process();
+        const std::vector<TessResult>& get_words() { return words; }
 
     private:
-    string file;
-    vector<tess_result> words;
+        std::string file;
+        std::vector<TessResult> words;
 };
 

@@ -3,7 +3,7 @@
 #include <analysis/analysis.hpp>
 #include <elements/elements.hpp>
 
-char const* analyze_photo(char const*)
+char const* analyze_photo()
 {
-    return ""
+    return "";
 }

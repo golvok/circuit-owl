@@ -37,15 +37,18 @@ endif
 LIBRARY_LINK_FLAGS += \
 	$(shell pkg-config --libs --static opencv) \
 	$(shell pkg-config --libs --static tesseract) \
-	-lpthread
+	$(shell pkg-config --libs --static python3) \
+	-lpthread \
+	-lboost_python-py34
 #	$(shell pkg-config --libs gtkmm-3.0) \
-
-INCLUDE_FLAGS += \
-	-I .
 
 # GRAPHICS_INCL_FLAGS += $(shell pkg-config --cflags gtkmm-3.0)
 OPENCV_INCL_FLAGS += $(shell pkg-config --cflags opencv)
 PYTHON3_INCL_FLAGS += $(shell pkg-config --cflags python3)
+
+INCLUDE_FLAGS += \
+	$(PYTHON3_INCL_FLAGS) \
+	-I .
 
 CXXFLAGS += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(INCLUDE_FLAGS)
 LDFLAGS  += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(LIBRARY_LINK_FLAGS)
@@ -111,7 +114,6 @@ $(EXE_DIR)main: \
 # $(OBJ_DIR)graphics/%.o: INCLUDE_FLAGS+=$(GRAPHICS_INCL_FLAGS)
 
 $(OBJ_DIR)elements/%.o: INCLUDE_FLAGS+=$(OPENCV_INCL_FLAGS)
-$(OBJ_DIR)main/%.o: INCLUDE_FLAGS+=$(PYTHON3_INCL_FLAGS)
 
 # include all the dependency files, if any exist
 EXISTING_DEP_FILES = \

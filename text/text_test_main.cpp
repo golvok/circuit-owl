@@ -1,6 +1,3 @@
-
-#include <text/text_finder.hpp>
-
 // #include <opencv2/text/ocr.hpp>
 #include <tesseract/baseapi.h>
 #include <leptonica/allheaders.h>
@@ -11,6 +8,8 @@
 #include <iostream>
 #include <memory>
 #include <algorithm>
+
+#include <text/text_finder.hpp>
 
 using namespace std;
 using namespace cv;
@@ -23,7 +22,7 @@ int main(int argc, char** argv) {
 
     string input(argv[1]);
 
-    text_finder t(input);
+    TextFinder t(input);
     t.process();
     t.save("./img/output_img.png");
 

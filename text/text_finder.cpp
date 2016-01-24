@@ -1,12 +1,13 @@
-#include "text/text_finder.hpp"
+#include <text/text_finder.hpp>
 
 using namespace cv;
+using namespace std;
 
-bool pair_compare(const tess_result& firstElem, const tess_result& secondElem) {
+bool pair_compare(const TessResult& firstElem, const TessResult& secondElem) {
   return firstElem.height < secondElem.height;
 }
 
-void text_finder::process()
+void TextFinder::process()
 {
     tesseract::TessBaseAPI tess;
 
@@ -33,7 +34,7 @@ void text_finder::process()
 	    int x1, y1, x2, y2;
 	    ri->BoundingBox(level, &x1, &y1, &x2, &y2);
         
-        string text(word);
+        std::string text(word);
         size_t char_index = 0;
 
         while(char_index < text.length())
@@ -48,7 +49,7 @@ void text_finder::process()
         int val = atoi(text.substr(0, char_index).c_str());
         text = text.substr(char_index, text.length() - char_index + 1);
 
-        tess_result new_tess(Point(x1,y1), Point(x2,y2), val, text);
+        TessResult new_tess(cv::Point(x1,y1), cv::Point(x2,y2), val, text);
         words.push_back(new_tess);
 	    printf("word: '%s';  \tconf: %.2f; BoundingBox: %d,%d,%d,%d;\n",
 	           word, conf, x1, y1, x2, y2);
@@ -59,14 +60,14 @@ void text_finder::process()
     sort(words.begin(), words.end(), pair_compare);
 }
 
-void text_finder::save(string output_file)
+void TextFinder::save(std::string output_file)
 {
-    Mat image = imread(file.c_str(), 1 );
+    cv::Mat image = imread(file.c_str(), 1 );
     int heightThresh = words.front().height;
 
     printf("height thresh is %d\n", heightThresh);
 
-    for(const tess_result& word : words)
+    for(const TessResult& word : words)
     {
         if(word.height <= heightThresh * 2)
         {
@@ -80,14 +81,14 @@ void text_finder::save(string output_file)
                 -1
             );*/
             
-            rectangle(
+            cv::rectangle(
                 image,
                 word.SW,
                 word.NE,
                 cv::Scalar(255, 0, 0)
             );
     
-            string output = to_string(word.val) + word.unit;
+            std::string output = std::to_string(word.val) + word.unit;
 
             putText(image, output, word.SW, 
     FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,0,0), 1, CV_AA);
