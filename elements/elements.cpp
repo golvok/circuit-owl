@@ -41,7 +41,24 @@ float find_max(const Mat& mat)
 	return maxValue;
 }
 
-void MatchingMethod( Mat img_scene, Mat templat, vector<Rect>& rects, double thresh )
+std::vector<std::pair<Rect,float>> anneal(std::vector<std::pair<Rect,float>> matches)
+{
+	vector<pair<Rect, float>> clusters;
+	for(auto res : matches)
+	{		
+		for (auto& cluster : clusters)
+		{
+			if((res.first & cluster.first).area() != 0)
+			{
+				cluster.first = res.first | cluster.first;
+				cluster.second = std::max(cluster.second, res.second);
+			}
+		}
+	}
+	return clusters;
+}
+
+void MatchingMethod( Mat img_scene, Mat templat, vector<pair<Rect,float>>& matches, double thresh )
 {
 	/// Source image to display
 	Mat img_display;
@@ -58,6 +75,8 @@ void MatchingMethod( Mat img_scene, Mat templat, vector<Rect>& rects, double thr
 	/// Do the Matching and Normalize
 	matchTemplate( img_display, templat, result, CV_TM_CCOEFF_NORMED );
 	float max = find_max(result);
+	
+	/*
 	if (max < 0.7) {
 
 		// cout << max << " returning" << endl;
@@ -68,6 +87,8 @@ void MatchingMethod( Mat img_scene, Mat templat, vector<Rect>& rects, double thr
 		waitKey(0);
 		return;
 	}
+	*/
+
 	cout << max << endl;
 	threshold( result, result, max*thresh, 255,THRESH_BINARY);
 
@@ -82,7 +103,7 @@ void MatchingMethod( Mat img_scene, Mat templat, vector<Rect>& rects, double thr
 		Point matchLoc = locations.front();
 		rectangle( img_display, matchLoc, Point( matchLoc.x + templat.cols , matchLoc.y + templat.rows ), Scalar::all(0), 2, 8, 0 );
 
-		rects.push_back(Rect(matchLoc.x, matchLoc.y, templat.cols, templat.rows));
+		matches.emplace_back(Rect(matchLoc.x, matchLoc.y, templat.cols, templat.rows), result.at<float>(matchLoc.x,matchLoc.y));
 
 		locations.pop();
 	}
@@ -96,8 +117,9 @@ void MatchingMethod( Mat img_scene, Mat templat, vector<Rect>& rects, double thr
 }
 
 vector<CircuitElement>  get_elements(Mat img_scene){
-	vector<Rect> restistors;
-	vector<Rect> sources;
+
+	vector<pair<Rect, float>> restistors;
+	vector<pair<Rect, float>> sources;
 
 	Mat img_res_v = imread("circuit_images/resistor_v.png", CV_LOAD_IMAGE_GRAYSCALE);
 	Mat img_res_h = imread("circuit_images/resistor_h.png", CV_LOAD_IMAGE_GRAYSCALE);
@@ -109,23 +131,64 @@ vector<CircuitElement>  get_elements(Mat img_scene){
 	MatchingMethod( img_scene, img_src_v, sources, 0.9);
 	MatchingMethod( img_scene, img_src_h, sources, 0.9);
 
-	int id = 0;
+	
 	vector<CircuitElement> v;
-	while (!restistors.empty()){
-		Rect r = restistors.front();
-		v.push_back(CircuitElement( id, Point( r.x, r.y ), Point( r.x + r.width , r.y + r.height ), 0, 0));
-		restistors.pop_back();
-		id++;
-	}
+	
+	std::vector<std::pair<Rect,float>> res_c = anneal(restistors);
+	std::vector<std::pair<Rect,float>> src_c = anneal(sources);
 
-	while (!sources.empty()){
-		Rect r = sources.front();
-		v.push_back(CircuitElement( id, Point( r.x, r.y ), Point( r.x + r.width , r.y + r.height ), 0, 0));
-		sources.pop_back();
-		id++;
+	int id = 0;
+	
+	for(auto res : res_c)
+	{	
+		bool biggest = true;
+		for(auto src : src_c)
+		{
+			if((src.first & res.first).area() != 0 && src.second > res.second)
+			{
+				biggest = false;
+				break;
+			}
+		}
+		
+		if(biggest)
+		{
+			v.push_back(CircuitElement( 
+				id, 
+				Point( res.first.x, res.first.y ), 
+				Point( res.first.x + res.first.width , res.first.y + res.first.height ), 
+				0, 
+				0)
+			);
+			id++;
+		}
+	}		
+	
+	for(auto src : src_c)
+	{	
+		bool biggest = true;
+		for(auto res : res_c)
+		{
+			if((src.first & res.first).area() != 0 && res.second >= src.second)
+			{
+				biggest = false;
+				break;
+			}
+		}
+		
+		if(biggest)
+		{
+			v.push_back(CircuitElement( 
+				id,
+				Point( src.first.x, src.first.y ), 
+				Point( src.first.x + src.first.width , src.first.y + src.first.height ), 
+				0, 
+				1)
+			);
+			id++;
+		}
 	}
-
-	// return pair<restistors,sources>;
+	
 	return v;
 }
 

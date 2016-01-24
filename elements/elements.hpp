@@ -22,7 +22,7 @@ void readme();
 void detectAndDisplay_harr( cv::Mat frame );
 void detectAndDisplay_homography( cv::Mat img_scene, cv::Mat img_object );
 void maxLocs(const cv::Mat& src, std::queue<cv::Point>& dst);
-void MatchingMethod( cv::Mat img_scene, cv::Mat templat, std::vector<cv::Rect>& rects, double thresh );
+void MatchingMethod( cv::Mat img_scene, cv::Mat templat, std::vector<std::pair<cv::Rect,float>>& matches, double thresh );
 std::vector<CircuitElement> get_elements(cv::Mat img_scene);
 
 #endif
