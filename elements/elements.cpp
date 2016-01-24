@@ -1,6 +1,10 @@
 #include <iostream>
 #include "elements.hpp"
 
+using namespace cv;
+using namespace std;
+using namespace utils;
+
 void maxLocs(const Mat& src, queue<Point>& dst)
 {
 	// float maxValue = -1.0f * numeric_limits<float>::max();
