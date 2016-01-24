@@ -103,7 +103,7 @@ void MatchingMethod( Mat img_scene, Mat templat, vector<pair<Rect,float>>& match
 		Point matchLoc = locations.front();
 		rectangle( img_display, matchLoc, Point( matchLoc.x + templat.cols , matchLoc.y + templat.rows ), Scalar::all(0), 2, 8, 0 );
 
-		matches.emplace_back(Rect(matchLoc.x, matchLoc.y, templat.cols, templat.rows), result.at<float>(matchLoc.x,matchLoc.y));
+		matches.emplace_back(Rect(matchLoc.x, matchLoc.y, templat.cols, templat.rows), result.at<float>(matchLoc.y,matchLoc.x));
 
 		locations.pop();
 	}
