@@ -45,6 +45,7 @@ INCLUDE_FLAGS += \
 
 # GRAPHICS_INCL_FLAGS += $(shell pkg-config --cflags gtkmm-3.0)
 OPENCV_INCL_FLAGS += $(shell pkg-config --cflags opencv)
+PYTHON3_INCL_FLAGS += $(shell pkg-config --cflags python3)
 
 CXXFLAGS += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(INCLUDE_FLAGS)
 LDFLAGS  += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(LIBRARY_LINK_FLAGS)
@@ -53,7 +54,7 @@ LDFLAGS  += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(LIBRARY_LINK_FLAGS)
 .PRECIOUS: $(OBJ_DIR)%.o
 
 # define source directories
-SOURCE_DIRS = circuit_graph/ display/ elements/ text/ utils/ analysis/ ./
+SOURCE_DIRS = circuit_graph/ display/ elements/ main/ text/ utils/ analysis/ ./
 
 # compute all directories that might need creation
 DIRS=$(EXE_DIR) $(OBJ_DIR) $(DEPS_DIR) \
@@ -66,7 +67,8 @@ $(EXE_DIR)elements \
 $(EXE_DIR)circuit_graph_test \
 $(EXE_DIR)text_test \
 $(EXE_DIR)display_test \
-$(EXE_DIR)analysis_test
+$(EXE_DIR)analysis_test \
+$(EXE_DIR)main
 
 all: $(EXES) | build_info
 
@@ -97,11 +99,19 @@ $(EXE_DIR)analysis_test: \
 	$(OBJ_DIR)analysis/analysis.o \
     $(OBJ_DIR)analysis/analysis_test_main.o
 
+$(EXE_DIR)main: \
+	$(OBJ_DIR)main/main.o \
+	$(OBJ_DIR)analysis/analysis.o \
+	$(OBJ_DIR)display/display.o \
+	$(OBJ_DIR)elements/elements.o \
+	$(OBJ_DIR)text/text_finder.o
+
 # define extra flags for particular object files
 # adds graphics include flags to everything in graphics dir
 # $(OBJ_DIR)graphics/%.o: INCLUDE_FLAGS+=$(GRAPHICS_INCL_FLAGS)
 
 $(OBJ_DIR)elements/%.o: INCLUDE_FLAGS+=$(OPENCV_INCL_FLAGS)
+$(OBJ_DIR)main/%.o: INCLUDE_FLAGS+=$(PYTHON3_INCL_FLAGS)
 
 # include all the dependency files, if any exist
 EXISTING_DEP_FILES = \
