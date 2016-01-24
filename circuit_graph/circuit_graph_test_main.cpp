@@ -1,9 +1,10 @@
 
-#include <elements/elements.hpp>
 #include <circuit_graph/circuit_graph.hpp>
 #include <circuit_graph/connection_finding.hpp>
 #include <circuit_graph/line_finding.hpp>
 #include <circuit_graph/line_clustering.hpp>
+#include <elements/elements.hpp>
+#include <main/common.hpp>
 #include <utils/geometry_utils.hpp>
 
 #include <opencv2/imgproc/imgproc.hpp>

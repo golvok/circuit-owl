@@ -1,8 +1,10 @@
 #ifndef MAIN_COMMON_CPP
 #define MAIN_COMMON_CPP
 
-#include <boost/python.hpp>
 #include <opencv2/core/core.hpp>
+
+#include <iostream>
+#include <iterator>
 
 //----Shared elements
 //------------------------------------------------------------
