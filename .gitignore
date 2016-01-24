@@ -31,3 +31,4 @@ train-sch.sublime-workspace
 __pycache__/
 media/
 mysite/components/
+mysite/node_modules/

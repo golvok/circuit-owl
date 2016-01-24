@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Upload a file in Django 1.5 using Dropzone.js</title>
         {% load staticfiles %}
-
+        <link href="{% static 'circuits/css/styles.css' %}" type="text/css" rel="stylesheet">
         <link href="{% static 'dropzone/dist/dropzone.css' %}" type="text/css" rel="stylesheet"/>
         <link href="{% static 'dropzone/dist/base.css' %}" type="text/css" rel="stylesheet"/>
         <script src="{% static 'dropzone/dist/dropzone.js' %}"></script>
@@ -13,40 +13,57 @@
     </head>
     <body>
  
-        <!-- IMPORTANT enctype attribute! -->
-        <form id="myDropzone" class="dropzone" action="{% url "circuits:upload" %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-        </form>
+        <div class="container">
+            <div class="banner">
+                    <img id="logo" src="{% static 'circuits/images/Logo.png' %}">
+                    <p class="description">Circuits are hard, let our owl do the work!</p>
+            </div>
+            <div class="content_container">
+                <!-- IMPORTANT enctype attribute! -->
 
-        <button id="submit-all">
-            Submit all files
-        </button> 
-        
-        <script type="text/javascript">
-            Dropzone.options.myDropzone = {
- 
-                // Prevents Dropzone from uploading dropped files immediately
-                autoProcessQueue : false,
- 
-                init : function() {
-                    var submitButton = document.querySelector("#submit-all")
-                    myDropzone = this;
- 
-                    submitButton.addEventListener("click", function() {
-                        myDropzone.processQueue();
-                        // Tell Dropzone to process all queued files.
-                    });
- 
-                    // You might want to show the submit button only when
-                    // files are dropped here:
-                    this.on("addedfile", function() {
-                        // Show submit button here and/or inform user to click it.
-                    }); 
-                },
+                <button id="submit-all">
+                    Submit all files
+                </button>                 
+
+                <div class="cover">
+                    <div class="dash_shadow"><img class="dash_shadow" src="{% static 'circuits/images/dash_fill.png' %}"></div>
+                    <div class="dash"><img class="dash" src="{% static 'circuits/images/dash.png' %}"></div>
+                    <div class="awake"><img src="{% static 'circuits/images/Awake-Small.gif' %}"></div>
+                    <div class="sleeping"><img src="{% static 'circuits/images/Sleeping-Small.gif' %}"></div>
+                </div>
+
+                <form id="myDropzone" class="dropzone" action="{% url 'circuits:upload' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                </form>
                 
-                acceptedFiles : ['image/*']
-            };
-        </script>
+                <script type="text/javascript">
+                    Dropzone.options.myDropzone = {
+         
+                        // Prevents Dropzone from uploading dropped files immediately
+                        autoProcessQueue : false,
+         
+                        init : function() {
+                            var submitButton = document.querySelector("#submit-all")
+                            myDropzone = this;
+         
+                            submitButton.addEventListener("click", function() {
+                                myDropzone.processQueue();
+                                $()
+                                // Tell Dropzone to process all queued files.
+                            });
+         
+                            // You might want to show the submit button only when
+                            // files are dropped here:
+                            this.on("addedfile", function() {
+                                // Show submit button here and/or inform user to click it.
+                            }); 
+                        },
+                        
+                        acceptedFiles : ['image/*']
+                    };
+                </script>
+            </div>
+        </div>
     </body>
 </html>
 
