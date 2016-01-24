@@ -10,9 +10,6 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/objdetect/objdetect.hpp>
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
 #include <vector>
 #include <limits>
@@ -20,15 +17,11 @@
 #include <iostream>
 #include <stdio.h>
 
-
-using namespace cv;
-using namespace std;
-using namespace utils;
 void readme();
-void detectAndDisplay_harr( Mat frame );
-void detectAndDisplay_homography( Mat img_scene, Mat img_object );
-void maxLocs(const Mat& src, queue<Point>& dst);
-void MatchingMethod( Mat img_scene, Mat templat, vector<Rect>& rects, double thresh );
-void get_elements(Mat img_scene);
+void detectAndDisplay_harr( cv::Mat frame );
+void detectAndDisplay_homography( cv::Mat img_scene, cv::Mat img_object );
+void maxLocs(const cv::Mat& src, std::queue<Point>& dst);
+void MatchingMethod( cv::Mat img_scene, cv::Mat templat, std::vector<cv::Rect>& rects, double thresh );
+void get_elements(cv::Mat img_scene);
 
 #endif
