@@ -11,7 +11,7 @@ int main( int argc, char** argv )
 
 	Mat img_scene = imread( argv[1], CV_LOAD_IMAGE_GRAYSCALE );
 
-	get_elements(img_scene);
+	auto var = get_elements(img_scene);
 
 	return 0;
 }
