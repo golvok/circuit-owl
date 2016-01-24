@@ -137,7 +137,7 @@ std::tuple<cv::Mat,std::vector<CircuitNode>> extract_nodes(const cv::Mat& img, c
 		const auto& this_wire_cluster_list = wire_cluster_lists[connection_list_index];
 
 		std::vector<int> ids;
-		ids.resize(connection_list.size());
+		ids.reserve(connection_list.size());
 		std::copy(connection_list.begin(), connection_list.end(), std::back_inserter(ids));
 
 		const auto& first_line = only_wire_lines[this_wire_cluster_list.front()];
