@@ -16,11 +16,11 @@ void TextFinder::process(const cv::Mat& image)
 	}
 
     //----OpenCV to tesseract
-    cv::Mat gray;
-    cv::cvtColor(image, gray, CV_BGR2GRAY);
+    //cv::Mat gray;
+    //cv::cvtColor(image, gray, CV_BGR2GRAY);
     // ...other image pre-processing here...    
     tess.SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
-    tess.SetImage((uchar*)gray.data, gray.cols, gray.rows, 1, gray.cols);
+    tess.SetImage((uchar*)image.data, image.cols, image.rows, 1, image.cols);
 
 	//auto pix_up = std::unique_ptr<Pix>(pixRead(file.c_str()));
 	tess.SetVariable("save_blob_choices", "T");
