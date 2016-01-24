@@ -51,9 +51,13 @@
                             myDropzone = this;
                             // You might want to show the submit button only when
                             // files are dropped here:
-                            this.on("addedfile", function(file, resp) { 
-                                console.log(resp);
-                                console.log(file);
+
+                            this.on("addedfile", function() {
+                                
+                            });
+                            
+                            this.on("success", function(file, resp) { 
+                                window.location.replace(resp.url);
                             });
 
                         },
