@@ -84,14 +84,6 @@
     display:none;
 }
 
-.result_container:hover .result_shadow{
-    display:none;
-}
-
-.result_container:hover .result_image{
-    display:block;
-}
-
 .removebutton{
     float:right;
 }
@@ -138,7 +130,7 @@
 }
 
 .result_image{
-    display:none;
+    display:block;
 }
 
 .result_shadow{

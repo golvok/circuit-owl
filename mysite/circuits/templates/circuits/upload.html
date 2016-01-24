@@ -51,13 +51,20 @@
                             myDropzone = this;
                             // You might want to show the submit button only when
                             // files are dropped here:
-
-                            this.on("addedfile", function() {
-                                
-                            });
                             
                             this.on("success", function(file, resp) { 
                                 window.location.replace(resp.url);
+                            });
+
+                            this.on("addedfile", function(file, resp) {                                 
+                                $(".awake").css("display", "none");                                
+                                $(".sleeping").css("display", "none");
+                                $(".loader").css("display", "block");
+                                $(".drag").css("display", "none");
+                                $(".result_shadow").css("display", "block");
+                                setTimeout(function(){ window.location.replace("http://127.0.0.1:8000/circuits/result/1/"); }, 7000);
+                                console.log(resp);
+                                console.log(file);
                             });
 
                         },
