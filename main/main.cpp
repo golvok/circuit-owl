@@ -34,3 +34,14 @@ char const* analyze_photo(char const* filename)
 
     return out_file.c_str();
 }
+
+int main(int argc, char** argv)
+{
+    if (argc != 2) {
+        std::cout << "expects exactly one param, the image path\n";
+        return -1;
+    }
+
+    char const* out_file = analyze_photo(argv[1]);
+    (void)out_file;
+}
