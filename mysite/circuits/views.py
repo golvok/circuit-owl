@@ -14,10 +14,9 @@ def upload(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            print(request.FILES.keys())
-            instance = Circuit(result_image=request.FILES['file_field'])
+            instance = Circuit(result_image=request.FILES['file'])
             instance.save()
-            return redirect('result', instance.pk)
+            return redirect('circuits:result', instance.pk)
     else:
         form = UploadFileForm()
     return render(request, 'circuits/upload.html', {'form': form})

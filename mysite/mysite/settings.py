@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'djangobower',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,6 +51,19 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Bower 
+STATICFILES_FINDERS = [
+    'djangobower.finders.BowerFinder',
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder"
+]
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR,'components')
+
+BOWER_INSTALLED_APPS = (
+    'jquery#1.9',
+    'dropzone',
+)
 
 ROOT_URLCONF = 'mysite.urls'
 

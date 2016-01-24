@@ -1,6 +1,69 @@
-<p>Hello, world. You're at the circuits upload page.<p>
-<form action="{% url 'upload' %}" method="post" enctype="multipart/form-data" >
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Upload a file in Django 1.5 using Dropzone.js</title>
+        {% load staticfiles %}
+
+        <link href="{% static 'dropzone/dist/dropzone.css' %}" type="text/css" rel="stylesheet"/>
+        <link href="{% static 'dropzone/dist/base.css' %}" type="text/css" rel="stylesheet"/>
+        <script src="{% static 'dropzone/dist/dropzone.js' %}"></script>
+        <script src="{% static 'jquery/jquery.js' %}"></script>
+
+    </head>
+    <body>
+ 
+        <!-- IMPORTANT enctype attribute! -->
+        <form id="myDropzone" class="dropzone" action="{% url "circuits:upload" %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+        </form>
+
+        <button id="submit-all">
+            Submit all files
+        </button> 
+        
+        <script type="text/javascript">
+            Dropzone.options.myDropzone = {
+ 
+                // Prevents Dropzone from uploading dropped files immediately
+                autoProcessQueue : false,
+ 
+                init : function() {
+                    var submitButton = document.querySelector("#submit-all")
+                    myDropzone = this;
+ 
+                    submitButton.addEventListener("click", function() {
+                        myDropzone.processQueue();
+                        // Tell Dropzone to process all queued files.
+                    });
+ 
+                    // You might want to show the submit button only when
+                    // files are dropped here:
+                    this.on("addedfile", function() {
+                        // Show submit button here and/or inform user to click it.
+                    }); 
+                },
+                
+                acceptedFiles : ['image/*']
+            };
+        </script>
+    </body>
+</html>
+
+<!--
+<form action="{% url 'circuits:upload' %}" method="post" enctype="multipart/form-data" >
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.title.errors }}
+        <label for="{{ form.title.id_for_label }}">Title:</label>
+        {{ form.title }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.file_field.errors }}
+        <label for="{{ form.file_field.id_for_label }}">File field:</label>
+        {{ form.file_field }}
+    </div>    
     <input type="submit" value="Submit" />
 </form>
+-->
