@@ -41,22 +41,22 @@
                 <script type="text/javascript">
                     Dropzone.options.myDropzone = {
          
-                        // Prevents Dropzone from uploading dropped files immediately
-                        autoProcessQueue : false,
+                        // Makes Dropzone automatically upload dropped files immediately
+                        autoProcessQueue : true,
          
                         init : function() {
                             myDropzone = this;
                             // You might want to show the submit button only when
                             // files are dropped here:
                             this.on("addedfile", function() {
-                                console.log("showing image");
-                                this.processQueue();
-                            }); 
+                                console.log("showing image");                                
+                            });
+                            this.on("addedfile", function(file, resp) { 
+                                console.log(resp);
+                                console.log(file);
+                            });
                         },
-                        
-                        autoProcessQueue: true,
-                        
-                        acceptedFiles : 'image/*,.png'
+                        acceptedFiles : 'image/*'
                     };
                 </script>
             </div>
