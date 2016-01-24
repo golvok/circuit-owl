@@ -18,6 +18,7 @@
             <div class="banner">
                     <img id="logo" src="{% static 'circuits/images/Logo.png' %}">
                     <p class="description">Circuits are hard, let our owl do the work!</p>
+                    <img id="restart" src="{% static 'circuits/images/new_session.png' %}">
             </div>
             <div class="content_container">
                 <!-- IMPORTANT enctype attribute! -->
@@ -32,6 +33,8 @@
                     <div class="awake"><img src="{% static 'circuits/images/Awake-Small.gif' %}"></div>
                     <div class="sleeping"><img src="{% static 'circuits/images/Sleeping-Small.gif' %}"></div>
                     <div class="drag"><img height="50px" src="{% static 'circuits/images/drag.png' %}"></div>
+                    <div class="loader"><img id="loader_image" src="{% static 'circuits/images/Loader.gif' %}"></div>
+                    <div class="result_shadow"><img id="result_shadow" src="{% static 'circuits/images/dash_fill.png' %}"></div>
                 </div>
 
                 <form id="myDropzone" class="dropzone" action="{% url 'circuits:upload' %}" method="post" enctype="multipart/form-data">
@@ -40,21 +43,19 @@
                 
                 <script type="text/javascript">
                     Dropzone.options.myDropzone = {
-         
+
                         // Makes Dropzone automatically upload dropped files immediately
                         autoProcessQueue : true,
-         
+
                         init : function() {
                             myDropzone = this;
                             // You might want to show the submit button only when
                             // files are dropped here:
-                            this.on("addedfile", function() {
-                                console.log("showing image");                                
-                            });
                             this.on("addedfile", function(file, resp) { 
                                 console.log(resp);
                                 console.log(file);
                             });
+
                         },
                         acceptedFiles : 'image/*'
                     };
