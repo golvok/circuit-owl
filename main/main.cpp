@@ -3,6 +3,7 @@
 #include <analysis/analysis.hpp>
 #include <elements/elements.hpp>
 
+
 char const* analyze_photo(char const* filename)
 {
     cv::Mat img = cv::imread(filename, 0);
@@ -21,6 +22,15 @@ char const* analyze_photo(char const* filename)
 
     annotate(elements, words);
     solve_voltages(nodes, elements);
-    
-    return filename;
+
+    // Render the anotations
+    for(const CircuitNode& node: nodes)
+    {
+        cv::putText(img, std::to_string(node.voltage) + "V", node.centroid,  cv::FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,0,0), 1, CV_AA);
+    }
+
+    std::string out_file = std::string(filename) + ".out";
+    imwrite(out_file, img);
+
+    return out_file.c_str();
 }
