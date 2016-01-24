@@ -33,15 +33,15 @@ std::vector<cv::Vec4i> find_lines(const cv::Mat& img_src, bool debug) {
 		cv::waitKey();
 	}
 
-	cv::Mat dst, cdst;
-	cv::Canny(skel, dst, 50, 200, 3);
+	cv::Mat dst = skel.clone();
+	cv::Mat cdst;
 	cv::cvtColor(dst, cdst, cv::COLOR_GRAY2BGR);
 
 	// cv::imshow("Canny", dst);
 	// cv::waitKey();
 
 	std::vector<cv::Vec4i> lines;
-	cv::HoughLinesP(skel, lines, 1, CV_PI/180, 5, 0, 10 );
+	cv::HoughLinesP(skel, lines, 1, CV_PI/180, 4, 0, 10);
 	
 	if (debug) {
 		std::cout << "found " << lines.size() << " lines\n";
