@@ -13,6 +13,7 @@ BUILD_MODE ?= debug
 EXE_DIR=EXE/
 OBJ_DIR=OBJ/
 DEPS_DIR=DEPS/
+LIB_DIR=LIB/
 
 # CXX = clang++ -stdlib=libstdc++
 # CXX = g++
@@ -37,16 +38,19 @@ endif
 LIBRARY_LINK_FLAGS += \
 	$(shell pkg-config --libs --static opencv) \
 	$(shell pkg-config --libs --static tesseract) \
+	$(shell pkg-config --libs --static python) \
+	-lboost_python \
+	-lboost_system \
 	-lpthread \
 
 # GRAPHICS_INCL_FLAGS += $(shell pkg-config --cflags gtkmm-3.0)
 OPENCV_INCL_FLAGS += $(shell pkg-config --cflags opencv)
-PYTHON3_INCL_FLAGS += $(shell pkg-config --cflags python3)
+PYTHON_INCL_FLAGS += $(shell pkg-config --cflags python)
 
 INCLUDE_FLAGS += \
 	-I .
 
-CXXFLAGS += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(INCLUDE_FLAGS)
+CXXFLAGS += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(INCLUDE_FLAGS) -fPIC
 LDFLAGS  += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(LIBRARY_LINK_FLAGS)
 
 # keep .o files
@@ -56,7 +60,7 @@ LDFLAGS  += $(EXTRA_FLAGS) $(WARNING_FLAGS) $(LIBRARY_LINK_FLAGS)
 SOURCE_DIRS = circuit_graph/ display/ elements/ main/ text/ utils/ analysis/ ./
 
 # compute all directories that might need creation
-DIRS=$(EXE_DIR) $(OBJ_DIR) $(DEPS_DIR) \
+DIRS=$(EXE_DIR) $(OBJ_DIR) $(DEPS_DIR) $(LIB_DIR) \
 	$(addprefix $(OBJ_DIR),$(SOURCE_DIRS)) \
 	$(addprefix $(DEPS_DIR),$(SOURCE_DIRS))
 
@@ -69,7 +73,11 @@ $(EXE_DIR)display_test \
 $(EXE_DIR)analysis_test \
 $(EXE_DIR)main
 
-all: $(EXES) | build_info
+# define libs to build
+LIBS= \
+$(LIB_DIR)circuit_analyzer.so
+
+all: $(EXES) $(LIBS) | build_info
 
 build_info:
 	@echo "Building with makeflags ${MAKEFLAGS}"
@@ -119,6 +127,21 @@ $(EXE_DIR)main: \
 
 $(OBJ_DIR)elements/%.o: INCLUDE_FLAGS+=$(OPENCV_INCL_FLAGS)
 
+$(OBJ_DIR)main/%.o: INCLUDE_FLAGS+=$(PYTHON_INCL_FLAGS)
+
+# Define the dependancies for the main circuit analyzer library
+$(LIB_DIR)circuit_analyzer.so: \
+	$(OBJ_DIR)main/main.o \
+	$(OBJ_DIR)analysis/analysis.o \
+	$(OBJ_DIR)display/display.o \
+	$(OBJ_DIR)elements/elements.o \
+	$(OBJ_DIR)text/text_finder.o \
+	$(OBJ_DIR)circuit_graph/circuit_graph.o \
+	$(OBJ_DIR)circuit_graph/connection_finding.o \
+	$(OBJ_DIR)circuit_graph/line_clustering.o \
+	$(OBJ_DIR)circuit_graph/line_finding.o \
+	$(OBJ_DIR)utils/geometry_utils.o	
+
 # include all the dependency files, if any exist
 EXISTING_DEP_FILES = \
 	$(foreach dir,$(SOURCE_DIRS), \
@@ -146,11 +169,16 @@ $(OBJ_DIR)%.o: %.cpp | build_info $(OBJ_DIR)$$(dir %) $(DEPS_DIR)$$(dir %)
 $(EXE_DIR)%: | build_info $(EXE_DIR)
 	$(CXX) $^ -o $@ $(LDFLAGS)
 
+# compile *.o's into libraries
+$(LIB_DIR)%: | build_info $(LIB_DIR)
+	$(CXX) -shared -Wl,--export-dynamic $^ -o $@ $(LDFLAGS)
+
 $(DIRS):
 	mkdir -p $@
 
 clean:
 	-rm -f $(EXES);
+	-rm -f $(LIBS);
 	-if [ -e $(EXE_DIR)  ]; then rmdir --ignore-fail-on-non-empty $(EXE_DIR);  fi;
 
 	for subdir in $(SOURCE_DIRS); do \

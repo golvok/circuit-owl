@@ -18,6 +18,7 @@
 
 # Executables
 EXE/**
+LIB/*.so
 
 # YCM compiled config
 .ycm_extra_conf.pyc

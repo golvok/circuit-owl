@@ -22,7 +22,7 @@ char const* analyze_photo(char const* filename_in, char const* filename_out, boo
     annotate(elements, words);
     solve_voltages(nodes, elements);
 
-    cvtColor(img, img, CV_GRAY2RGB);    
+    cvtColor(img, img, CV_GRAY2RGB);
 
     // Render the anotations
     for(const CircuitNode& node: nodes)
